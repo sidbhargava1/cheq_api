@@ -42,10 +42,15 @@ group :development, :test do
 end
 
 group :test do
-  gem "rspec-rails", "~> 2.14"
+  gem "rspec-rails", "~> 3.1"
   gem "factory_girl_rails"
   gem 'ffaker'
   gem "shoulda-matchers"
 end
 
 gem "devise"
+gem 'sabisu_rails', github: "IcaliaLabs/sabisu-rails"
+gem 'compass-rails', github: 'Compass/compass-rails'
+gem 'furatto'
+gem 'font-awesome-rails'
+gem 'simple_form'
