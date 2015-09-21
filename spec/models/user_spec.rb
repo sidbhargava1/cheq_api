@@ -17,6 +17,8 @@ describe User do
   it { should validate_confirmation_of(:password) }
   it { should allow_value('example@domain.com').for(:email) }
 
+  it {should have_many(:restaurants) }
+    
   # we test the auth_token is unique
   it { should validate_uniqueness_of(:auth_token)}
   
@@ -33,6 +35,20 @@ describe User do
       expect(@user.auth_token).not_to eql existing_user.auth_token
     end
   end
+
+  describe "#restaurants association" do
+    before do
+        @user.save
+        3.times { FactoryGirl.create :restaurant, user: @user }
+    end
     
+    it "destroys the associated restaurants on self destruct" do
+        restaurants = @user.restaurants
+        @user.destroy
+        restaurants.each do |restaurant|
+            expect(Restaurant.find(restaurant)).to raise_error ActiveRecord::RecordNotFount
+        end
+    end
+  end
   it { should be_valid }
 end

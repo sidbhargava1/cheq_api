@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :restaurant do
     name { FFaker::Product.product_name }
-user_id 1
+user
 address { FFaker::Product.product_name }
 city { FFaker::Product.product_name }
 postal { FFaker::Product.product_name }
