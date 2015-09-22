@@ -19,7 +19,7 @@ gem 'jquery-rails'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 #Api gems
-gem 'active_model_serializers'
+gem 'active_model_serializers', git: 'git@github.com:rails-api/active_model_serializers.git', branch: '0-8-stable'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -39,13 +39,13 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem "factory_girl_rails"
+  gem 'ffaker'
 end
 
 group :test do
   gem "rspec-rails"
   gem 'rspec-collection_matchers'
-  gem "factory_girl_rails"
-  gem 'ffaker'
   gem "shoulda-matchers"
 end
 

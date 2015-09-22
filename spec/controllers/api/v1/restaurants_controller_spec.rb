@@ -8,7 +8,7 @@ RSpec.describe Api::V1::RestaurantsController, type: :controller do
         end
         
         it "returns the information about a reporter on a hash" do
-            restaurant_response = json_response
+            restaurant_response = json_response[:restaurant]
             expect(restaurant_response[:name]).to eql @restaurant.name
         end
     
@@ -39,7 +39,7 @@ RSpec.describe Api::V1::RestaurantsController, type: :controller do
             end
             
             it "renders the json representation for the restaurant record just created" do
-                restaurant_response = json_response
+                restaurant_response = json_response[:restaurant]
                 expect(restaurant_response[:name]).to eql @restaurant_attributes[:name]
             end
             
@@ -81,7 +81,7 @@ RSpec.describe Api::V1::RestaurantsController, type: :controller do
             end
             
             it "renders the json representation for the updated user" do 
-                restaurant_response = json_response
+                restaurant_response = json_response[:restaurant]
                 expect(restaurant_response[:name]).to eql "this is an updated name"
             end
             

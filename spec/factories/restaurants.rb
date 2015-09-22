@@ -1,12 +1,12 @@
 FactoryGirl.define do
   factory :restaurant do
-    name { FFaker::Product.product_name }
+    name { FFaker::Company.name }
 user
-address { FFaker::Product.product_name }
-city { FFaker::Product.product_name }
-postal { FFaker::Product.product_name }
-province { FFaker::Product.product_name }
-country { FFaker::Product.product_name }
+address { FFaker::AddressUS.street_address }
+city { FFaker::AddressUS.city }
+postal { FFaker::AddressUS.zip_code }
+province { FFaker::AddressUS.state }
+country { FFaker::AddressUS.country }
 menu_id 1
   end
 end
