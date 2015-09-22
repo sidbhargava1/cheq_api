@@ -13,6 +13,11 @@ describe Api::V1::UsersController do
     end
 
     it { should respond_with 200 }
+    
+    it "has the restaurant ids as an embeded object" do
+        user_response = json_response[:user]
+        expect(user_response[:restaurant_ids]).to eql []
+    end
   end
 
   describe "POST #create" do

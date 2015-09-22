@@ -12,21 +12,53 @@ RSpec.describe Api::V1::RestaurantsController, type: :controller do
             expect(restaurant_response[:name]).to eql @restaurant.name
         end
     
+        it "has the user as a embeded object" do
+            restaurant_response = json_response[:restaurant]
+            expect(restaurant_response[:user][:email]).to eql @restaurant.user.email
+        end
+        
         it { should respond_with 200 }
     end
     
     describe "GET #index" do
         before(:each) do
             4.times { FactoryGirl.create :restaurant }
-            get :index
         end
         
-        it "returns 4 records from the database" do
-            restaurants_response = json_response
-            expect(restaurants_response[:restaurants]).to have(4).items
+        context "when is not receiving any restaurant_ids parameter" do
+            before(:each) do
+                get :index
+            end
+        
+            it "returns 4 records from the database" do
+                restaurants_response = json_response
+                expect(restaurants_response[:restaurants]).to have(4).items
+            end
+
+            it "returns the user object into each product" do
+                restaurants_response = json_response[:restaurants]
+                restaurants_response.each do |restaurant_response|
+                    expect(restaurant_response[:user]).to be_present
+                end
+            end
+        
+            it { should respond_with 200 }
         end
+
+        context "when restaurant_ids parameter is sent" do
+            before(:each) do
+                @user = FactoryGirl.create :user
+                3.times { FactoryGirl.create :restaurant, user: @user }
+                get :index, restaurant_ids: @user.restaurant_ids
+            end
             
-        it { should respond_with 200 }
+            it "returns just the restaurants that belong to the user" do
+                restaurants_response = json_response[:restaurants]
+                restaurants_response.each do |restaurant_response|
+                    expect(restaurant_response[:user][:email]).to eql @user.email
+                end
+            end
+        end
     end
     
     describe "POST #create" do
