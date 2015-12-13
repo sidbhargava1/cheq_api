@@ -7,6 +7,5 @@ city { FFaker::AddressUS.city }
 postal { FFaker::AddressUS.zip_code }
 province { FFaker::AddressUS.state }
 country { FFaker::AddressUS.country }
-menu_id 1
   end
 end

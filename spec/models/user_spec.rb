@@ -50,5 +50,38 @@ describe User do
         end
     end
   end
+
+  describe "#menu association" do
+    before do
+        @user.save
+        FactoryGirl.create :restaurant, user: @user
+        3.times { FactoryGirl.create :menu, restaurant: @user.restaurants.first }
+    end
+    
+    it "destroys the associated menus on self destruct" do
+        menus = @user.restaurants.first.menus
+        @user.destroy
+        menus.each do |menu|
+            expect(Menu.find(menu)).to raise_error ActiveRecord::RecordNotFount
+        end
+    end
+  end
+
+  describe "#menuItem association" do
+    before do
+        @user.save
+        FactoryGirl.create :restaurant, user: @user
+        FactoryGirl.create :menu, restaurant: @user.restaurants.first
+        3.times { FactoryGirl.create :menuItem, menu: @user.restaurants.first.menus.first }
+    end
+    
+    it "destroys the associated menu items on self destruct" do
+        menuItems = @user.restaurants.first.menus.first.menuItems
+        @user.destroy
+        menuItems.each do |menuItem|
+            expect(MenuItem.find(menuItem)).to raise_error ActiveRecord::RecordNotFount
+        end
+    end
+  end
   it { should be_valid }
 end

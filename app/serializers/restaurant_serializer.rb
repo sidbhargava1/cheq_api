@@ -1,4 +1,5 @@
 class RestaurantSerializer < ActiveModel::Serializer
-  attributes :id, :name, :address, :city, :postal, :province, :country, :menu_id
-    has_one :user
+  embed :ids
+  attributes :id, :name, :address, :city, :postal, :province, :country
+  has_many :menus
 end

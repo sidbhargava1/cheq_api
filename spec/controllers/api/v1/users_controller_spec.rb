@@ -4,6 +4,7 @@ describe Api::V1::UsersController do
   describe "GET #show" do
     before(:each) do 
       @user = FactoryGirl.create :user
+      3.times { FactoryGirl.create :restaurant, user: @user }
       get :show, id: @user.id
     end
 
@@ -11,13 +12,13 @@ describe Api::V1::UsersController do
       user_response = json_response[:user]
       expect(user_response[:email]).to eql @user.email
     end
-
-    it { should respond_with 200 }
     
-    it "has the restaurant ids as an embeded object" do
-        user_response = json_response[:user]
-        expect(user_response[:restaurant_ids]).to eql []
+    it "has the restaurant as an embeded object" do
+            user_response = json_response[:user]
+            expect(user_response[:restaurants]).to be_present
     end
+    
+    it { should respond_with 200 }
   end
 
   describe "POST #create" do
@@ -47,7 +48,7 @@ describe Api::V1::UsersController do
         expect(user_response).to have_key(:errors)
       end
 
-      it "renders the json errors on whye the user could not be created" do
+      it "renders the json errors on why the user could not be created" do
         user_response = json_response
         expect(user_response[:errors][:email]).to include "can't be blank"
       end

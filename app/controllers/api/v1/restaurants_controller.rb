@@ -3,7 +3,7 @@ class Api::V1::RestaurantsController < ApplicationController
     respond_to :json
     
     def index
-        restaurants = params[:restaurant_ids].present? ? Restaurant.find(params[:restaurant_ids]) : Restaurant.all
+        restaurants = params[:restaurant_ids].present? ? Restaurant.find(params[:restaurant_ids]) : (current_user.present? ? Restaurant.find(current_user.restaurant_ids) : Restaurant.all)
         respond_with restaurants
     end
     
@@ -35,7 +35,9 @@ class Api::V1::RestaurantsController < ApplicationController
         head 204
     end
     
+    private 
+        
     def restaurant_params
-        params.require(:restaurant).permit(:name, :address, :city, :postal, :province, :country, :menu_id)
+        params.require(:restaurant).permit(:name, :address, :city, :postal, :province, :country)
     end
 end

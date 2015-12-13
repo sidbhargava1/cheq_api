@@ -11,7 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150921152239) do
+ActiveRecord::Schema.define(version: 20151011005108) do
+
+  create_table "menu_items", force: :cascade do |t|
+    t.string   "title",      default: ""
+    t.string   "desc",       default: ""
+    t.decimal  "price",      default: 0.0
+    t.integer  "spice",      default: 0
+    t.boolean  "veg",        default: false
+    t.boolean  "healthy",    default: false
+    t.integer  "menu_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "menu_items", ["menu_id"], name: "index_menu_items_on_menu_id"
+
+  create_table "menus", force: :cascade do |t|
+    t.string   "desc",          default: ""
+    t.integer  "menu_item_id"
+    t.integer  "restaurant_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "menus", ["restaurant_id"], name: "index_menus_on_restaurant_id"
 
   create_table "restaurants", force: :cascade do |t|
     t.string   "name",       default: ""
@@ -21,7 +45,6 @@ ActiveRecord::Schema.define(version: 20150921152239) do
     t.string   "postal",     default: ""
     t.string   "province",   default: ""
     t.string   "country",    default: ""
-    t.integer  "menu_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

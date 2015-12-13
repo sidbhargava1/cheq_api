@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe Restaurant, type: :model do
-  let(:restaurant) { FactoryGirl.build :restaurant }
-  subject { restaurant }
+  before { @restaurant = FactoryGirl.build :restaurant }
+  subject { @restaurant }
+    
+  #let(:restaurant) { FactoryGirl.build :restaurant }
+  #subject { restaurant }
     
   it { should respond_to(:name) }
   it { should respond_to(:address) }
@@ -11,7 +14,6 @@ RSpec.describe Restaurant, type: :model do
   it { should respond_to(:province) }
   it { should respond_to(:country) }
   it { should respond_to(:user_id) }
-  it { should respond_to(:menu_id) }
     
   it { should validate_presence_of :name }
   it { should validate_presence_of :address }    
@@ -20,7 +22,22 @@ RSpec.describe Restaurant, type: :model do
   it { should validate_presence_of(:province) }
   it { should validate_presence_of(:country) }
   it { should validate_presence_of(:user_id) }
-  it { should validate_presence_of(:menu_id) }
-    
+
+  it { should have_many(:menus) }
   it { should belong_to :user }
+
+  describe "#menus association" do
+    before do
+        @restaurant.save
+        3.times { FactoryGirl.create :menu, restaurant: @restaurant }
+    end
+    
+    it "destroys the associated menus on self destruct" do
+        menus = @restaurant.menus
+        @restaurant.destroy
+        menus.each do |menu|
+            expect(Menu.find(menu)).to raise_error ActiveRecord::RecordNotFount
+        end
+    end
+  end
 end
